@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>マイファーストLIFF</title>
+    <!-- LINEが用意してくれたLIFFの仕組み（SDK）を読み込みます -->
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+    <div style="text-align: center; margin-top: 50px; font-family: sans-serif;">
+        <h1>LIFFアプリ起動成功！</h1>
+        <p id="status">LINEの情報を読み込んでいます...</p>
+        <p id="user-name" style="font-size: 24px; font-weight: bold; color: #06C755;"></p>
+    </div>
+
+    <script>
+        // 👇 ここに、さっき画面に表示された「LIFF ID」を貼り付けてください！
+        const myLiffId = "2010646478-rObRTWxF";
+
+        // LIFFアプリを立ち上げる命令
+        liff.init({ liffId: myLiffId })
+            .then(() => {
+                document.getElementById("status").innerText = "LINEとの連携に成功しました！";
+                
+                // ログインしているユーザーのプロフィール（名前）を取得して表示する
+                if (liff.isLoggedIn()) {
+                    liff.getProfile().then(profile => {
+                        document.getElementById("user-name").innerText = "こんにちは、" + profile.displayName + " さん！";
+                    });
+                } else {
+                    document.getElementById("user-name").innerText = "LINEアプリ内で開いてみてください。";
+                }
+            })
+            .catch((err) => {
+                document.getElementById("status").innerText = "エラーが発生しました: " + err;
+            });
+    </script>
+</body>
+</html>
